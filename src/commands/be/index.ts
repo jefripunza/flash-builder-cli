@@ -5,24 +5,43 @@ import { log } from "../../utils/logger";
 import { PWD, IS_NPMJS } from "../../environment";
 import { packageJson, indexTs, gitignore, readme, envFile } from "./files";
 
-export function beCommand(projectName: string, verbose: boolean) {
+export function beCommand(
+  projectName: string,
+  verbose: boolean,
+  targetPath?: string,
+) {
   if (!projectName) {
     console.error("❌ Error: Project name is required");
     console.log("Usage: fbi be <project-name>");
     process.exit(1);
   }
 
-  const projectPath = join(PWD, projectName);
+  // Handle dot (.) or relative paths starting with ./ in targetPath (args[1])
+  const isCurrentDir = targetPath === "." || targetPath?.startsWith("./");
+  let projectPath: string;
+  let actualProjectName: string;
+
+  if (isCurrentDir && targetPath) {
+    projectPath =
+      targetPath === "." ? PWD : join(PWD, targetPath.replace("./", ""));
+    // Use projectName from args[0] as the actual project name
+    actualProjectName = projectName;
+  } else {
+    projectPath = join(PWD, projectName);
+    actualProjectName = projectName;
+  }
+
   if (existsSync(projectPath)) {
     if (IS_NPMJS) {
       console.error(`❌ Error: Directory '${projectName}' already exists`);
       process.exit(1);
-    } else {
-      rmSync(PWD, { recursive: true, force: true });
     }
   }
+  if (!IS_NPMJS) {
+    rmSync(PWD, { recursive: true, force: true });
+  }
 
-  log(`🚀 Creating new backend project: ${projectName}`, false, verbose);
+  log(`🚀 Creating new backend project: ${actualProjectName}`, false, verbose);
 
   // =========================================================================== //
 
@@ -35,20 +54,27 @@ export function beCommand(projectName: string, verbose: boolean) {
 
   // --------------------------------------------------------------------------- //
 
-  const packageJsonString = JSON.stringify(packageJson(projectName), null, 2);
+  const packageJsonString = JSON.stringify(
+    packageJson(actualProjectName),
+    null,
+    2,
+  );
   writeFileSync(join(projectPath, "package.json"), packageJsonString);
 
   // --------------------------------------------------------------------------- //
 
-  writeFileSync(join(projectPath, "src", "index.ts"), indexTs(projectName));
+  writeFileSync(
+    join(projectPath, "src", "index.ts"),
+    indexTs(actualProjectName),
+  );
   writeFileSync(join(projectPath, ".env"), envFile);
   writeFileSync(join(projectPath, ".gitignore"), gitignore);
-  writeFileSync(join(projectPath, "README.md"), readme(projectName));
+  writeFileSync(join(projectPath, "README.md"), readme(actualProjectName));
 
   // --------------------------------------------------------------------------- //
 
   log(
-    `✅ Backend project '${projectName}' created successfully!`,
+    `✅ Backend project '${actualProjectName}' created successfully!`,
     false,
     verbose,
   );
@@ -67,6 +93,8 @@ export function beCommand(projectName: string, verbose: boolean) {
   }
 
   log(`\nNext steps:`, true, verbose);
-  log(`  cd ${projectName}`, true, verbose);
+  if (!isCurrentDir) {
+    log(`  cd ${actualProjectName}`, true, verbose);
+  }
   log(`  bun run dev`, true, verbose);
 }

@@ -52,7 +52,7 @@ console.log({ args });
 
 switch (command) {
   case "be":
-    beCommand(args[0] || "", cli.flags.verbose);
+    beCommand(args[0] || "", cli.flags.verbose, args[1]);
     break;
 
   case "mcp":
