@@ -3,8 +3,8 @@ import path from "path";
 import { PWD, FROM_NODE_MODULE } from "./environment";
 
 const packageJsonPath = FROM_NODE_MODULE
-  ? path.join(PWD, "package.json")
-  : path.join(PWD, "node_modules", "flash-builder", "package.json");
+  ? path.join(PWD, "node_modules", "flash-builder", "package.json")
+  : path.join(PWD, "package.json");
 const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf-8"));
 const packageVersion = packageJson.version;
 console.log({
