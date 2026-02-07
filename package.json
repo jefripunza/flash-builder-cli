@@ -1,0 +1,40 @@
+{
+  "name": "flash-builder",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/jefripunza/flash-builder-cli#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jefripunza/flash-builder-cli.git"
+  },
+  "bugs": "https://github.com/jefripunza/flash-builder-cli/issues",
+  "author": "Jefri Herdi Triyanto <jefripunza@gmail.com>",
+  "license": "MIT",
+  "types": "./src/index.d.ts",
+  "bin": {
+    "fbi": "./src/index.ts"
+  },
+  "type": "module",
+  "scripts": {
+    "start": "bun run src/index.ts",
+    "build": "bun build ./src/index.ts --compile --outfile fbi"
+  },
+  "files": [
+    "src"
+  ],
+  "keywords": [
+    "flash builder",
+    "cli",
+    "bun"
+  ],
+  "dependencies": {
+    "dotenv": "^17.2.4",
+    "meow": "^14.0.0"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}
