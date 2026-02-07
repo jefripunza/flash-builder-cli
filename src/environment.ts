@@ -7,6 +7,7 @@ dotenv.config({ path: ".env", quiet: true });
 export const PWD = process.cwd();
 export const ENV = process.env as Record<string, string>;
 export const FROM_NODE_MODULE = ENV["_"]?.includes(".bin/fbi");
+console.log({ ENV, PWD, FROM_NODE_MODULE });
 
 export const PROJECT_TARGET_URL = ENV.PROJECT_TARGET_URL;
 

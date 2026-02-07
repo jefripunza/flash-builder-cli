@@ -7,6 +7,11 @@ const packageJsonPath = FROM_NODE_MODULE
   : path.join(PWD, "node_modules", "flash-builder", "package.json");
 const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf-8"));
 const packageVersion = packageJson.version;
+console.log({
+  packageJsonPath,
+  packageJson,
+  packageVersion,
+});
 
 const banner = `
     ________           __       ____        _ __    __         
