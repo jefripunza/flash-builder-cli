@@ -38,3 +38,5 @@ fbi
 
 # Lockfile
 bun.lock
+
+/isolate

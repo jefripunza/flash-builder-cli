@@ -1,6 +1,7 @@
 import { existsSync, mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { log } from "../../utils/logger";
+import { PWD } from "../../environment";
 
 export function mcpCommand(projectName: string, verbose: boolean) {
   if (!projectName) {
@@ -9,7 +10,7 @@ export function mcpCommand(projectName: string, verbose: boolean) {
     process.exit(1);
   }
 
-  const projectPath = join(process.cwd(), projectName);
+  const projectPath = join(PWD, projectName);
 
   if (existsSync(projectPath)) {
     console.error(`❌ Error: Directory '${projectName}' already exists`);
@@ -103,7 +104,11 @@ bun run dev
 `,
   );
 
-  log(`✅ MCP server project '${projectName}' created successfully!`, false, verbose);
+  log(
+    `✅ MCP server project '${projectName}' created successfully!`,
+    false,
+    verbose,
+  );
   log(`\nNext steps:`, true, verbose);
   log(`  cd ${projectName}`, true, verbose);
   log(`  bun install`, true, verbose);

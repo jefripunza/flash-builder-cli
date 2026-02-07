@@ -1,13 +1,22 @@
+import fs from "fs";
+import path from "path";
+
 // Third party
 import dotenv from "dotenv";
 
 // Load environment variables
 dotenv.config({ path: ".env", quiet: true });
 
-export const PWD = process.cwd();
 export const ENV = process.env as Record<string, string>;
-export const FROM_NODE_MODULE = ENV["_"]?.includes(".bin/fbi");
-console.log({ ENV, PWD, FROM_NODE_MODULE });
+export const IS_NPMJS = ENV["_"]?.includes(".bin/fbi");
+export const PWD = IS_NPMJS
+  ? process.cwd()
+  : path.join(process.cwd(), "isolate");
+// console.log({ ENV, PWD, IS_NPMJS });
+
+if (!IS_NPMJS && !fs.existsSync(PWD)) {
+  fs.mkdirSync(PWD, { recursive: true });
+}
 
 export const PROJECT_TARGET_URL = ENV.PROJECT_TARGET_URL;
 

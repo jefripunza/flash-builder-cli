@@ -1,11 +1,16 @@
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { log } from "../../utils/logger";
+import { PWD } from "../../environment";
 
 export function syncCommand(verbose: boolean) {
-  log(`🔄 Syncing backend interface with application target...`, false, verbose);
+  log(
+    `🔄 Syncing backend interface with application target...`,
+    false,
+    verbose,
+  );
 
-  const packageJsonPath = join(process.cwd(), "package.json");
+  const packageJsonPath = join(PWD, "package.json");
 
   if (!existsSync(packageJsonPath)) {
     console.error("❌ Error: package.json not found in current directory");

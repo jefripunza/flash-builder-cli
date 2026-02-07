@@ -1,6 +1,8 @@
-import { existsSync, mkdirSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, writeFileSync, rmdirSync } from "node:fs";
 import { join } from "node:path";
+
 import { log } from "../../utils/logger";
+import { PWD, IS_NPMJS } from "../../environment";
 
 export function beCommand(projectName: string, verbose: boolean) {
   if (!projectName) {
@@ -9,11 +11,14 @@ export function beCommand(projectName: string, verbose: boolean) {
     process.exit(1);
   }
 
-  const projectPath = join(process.cwd(), projectName);
-
+  const projectPath = join(PWD, projectName);
   if (existsSync(projectPath)) {
-    console.error(`❌ Error: Directory '${projectName}' already exists`);
-    process.exit(1);
+    if (IS_NPMJS) {
+      console.error(`❌ Error: Directory '${projectName}' already exists`);
+      process.exit(1);
+    } else {
+      rmdirSync(projectPath);
+    }
   }
 
   log(`🚀 Creating new backend project: ${projectName}`, false, verbose);
@@ -98,7 +103,11 @@ bun run dev
 `,
   );
 
-  log(`✅ Backend project '${projectName}' created successfully!`, false, verbose);
+  log(
+    `✅ Backend project '${projectName}' created successfully!`,
+    false,
+    verbose,
+  );
   log(`\nNext steps:`, true, verbose);
   log(`  cd ${projectName}`, true, verbose);
   log(`  bun install`, true, verbose);
