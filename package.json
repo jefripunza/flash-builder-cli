@@ -1,6 +1,6 @@
 {
   "name": "flash-builder",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "",
   "homepage": "https://github.com/jefripunza/flash-builder-cli#readme",
   "repository": {
@@ -27,7 +27,8 @@
   },
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "package.json"
   ],
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",

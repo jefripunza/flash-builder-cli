@@ -6,6 +6,10 @@ dotenv.config({ path: ".env", quiet: true });
 
 export const PWD = process.cwd();
 export const ENV = process.env as Record<string, string>;
+console.log({
+  PWD,
+  ENV,
+});
 
 export const PROJECT_TARGET_URL = ENV.PROJECT_TARGET_URL;
 
