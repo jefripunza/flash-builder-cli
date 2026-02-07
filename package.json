@@ -1,6 +1,6 @@
 {
   "name": "flash-builder",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "",
   "homepage": "https://github.com/jefripunza/flash-builder-cli#readme",
   "repository": {
@@ -10,9 +10,13 @@
   "bugs": "https://github.com/jefripunza/flash-builder-cli/issues",
   "author": "Jefri Herdi Triyanto <jefripunza@gmail.com>",
   "license": "MIT",
-  "types": "./src/index.d.ts",
+  "keywords": [
+    "flash builder",
+    "cli",
+    "bun"
+  ],
   "bin": {
-    "fbi": "./src/index.ts"
+    "fbi": "./dist/index.js"
   },
   "type": "module",
   "scripts": {
@@ -25,11 +29,14 @@
     "dist",
     "README.md"
   ],
-  "keywords": [
-    "flash builder",
-    "cli",
-    "bun"
-  ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "require": "./dist/index.cjs",
+    "import": "./dist/index.js",
+    "types": "./dist/index.d.ts"
+  },
   "dependencies": {
     "bun-plugin-dts": "^0.3.0",
     "dotenv": "^17.2.4",

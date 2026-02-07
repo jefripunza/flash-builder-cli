@@ -4,6 +4,7 @@ import dts from "bun-plugin-dts";
 const defaultBuildConfig: BuildConfig = {
   entrypoints: ["./src/index.ts"],
   outdir: "./dist",
+  target: "bun",
 };
 
 await Promise.all([
