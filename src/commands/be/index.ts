@@ -31,7 +31,7 @@ export function beCommand(
     actualProjectName = projectName;
   }
 
-  if (existsSync(projectPath)) {
+  if (existsSync(projectPath) && !isCurrentDir) {
     if (IS_NPMJS) {
       console.error(`❌ Error: Directory '${projectName}' already exists`);
       process.exit(1);
