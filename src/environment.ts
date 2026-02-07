@@ -12,11 +12,7 @@ export const IS_NPMJS = ENV["_"]?.includes(".bin/fbi");
 export const PWD = IS_NPMJS
   ? process.cwd()
   : path.join(process.cwd(), "isolate");
-// console.log({ ENV, PWD, IS_NPMJS });
-
-if (!IS_NPMJS && !fs.existsSync(PWD)) {
-  fs.mkdirSync(PWD, { recursive: true });
-}
+console.log({ ENV, PWD, IS_NPMJS });
 
 export const PROJECT_TARGET_URL = ENV.PROJECT_TARGET_URL;
 
