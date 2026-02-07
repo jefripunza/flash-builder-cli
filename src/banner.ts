@@ -1,8 +1,10 @@
 import fs from "fs";
 import path from "path";
-import { PWD } from "./environment";
+import { PWD, FROM_NODE_MODULE } from "./environment";
 
-const packageJsonPath = path.join(PWD, "package.json");
+const packageJsonPath = FROM_NODE_MODULE
+  ? path.join(PWD, "package.json")
+  : path.join(__dirname, "../package.json");
 const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf-8"));
 const packageVersion = packageJson.version;
 
