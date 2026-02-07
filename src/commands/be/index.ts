@@ -17,31 +17,25 @@ export function beCommand(
   }
 
   // Handle dot (.) or relative paths starting with ./ in targetPath (args[1])
-  const isCurrentDir = targetPath === "." || targetPath?.startsWith("./");
   let projectPath: string;
-  let actualProjectName: string;
-
-  if (isCurrentDir && targetPath) {
-    projectPath =
-      targetPath === "." ? PWD : join(PWD, targetPath.replace("./", ""));
-    // Use projectName from args[0] as the actual project name
-    actualProjectName = projectName;
+  if (targetPath) {
+    projectPath = join(PWD, targetPath);
   } else {
     projectPath = join(PWD, projectName);
-    actualProjectName = projectName;
   }
 
-  if (existsSync(projectPath) && !isCurrentDir) {
+  if (existsSync(projectPath)) {
     if (IS_NPMJS) {
       console.error(`❌ Error: Directory '${projectName}' already exists`);
       process.exit(1);
     }
   }
+
   if (!IS_NPMJS) {
     rmSync(PWD, { recursive: true, force: true });
   }
 
-  log(`🚀 Creating new backend project: ${actualProjectName}`, false, verbose);
+  log(`🚀 Creating new backend project: ${projectName}`, false, verbose);
 
   // =========================================================================== //
 
@@ -54,27 +48,20 @@ export function beCommand(
 
   // --------------------------------------------------------------------------- //
 
-  const packageJsonString = JSON.stringify(
-    packageJson(actualProjectName),
-    null,
-    2,
-  );
+  const packageJsonString = JSON.stringify(packageJson(projectName), null, 2);
   writeFileSync(join(projectPath, "package.json"), packageJsonString);
 
   // --------------------------------------------------------------------------- //
 
-  writeFileSync(
-    join(projectPath, "src", "index.ts"),
-    indexTs(actualProjectName),
-  );
+  writeFileSync(join(projectPath, "src", "index.ts"), indexTs(projectName));
   writeFileSync(join(projectPath, ".env"), envFile);
   writeFileSync(join(projectPath, ".gitignore"), gitignore);
-  writeFileSync(join(projectPath, "README.md"), readme(actualProjectName));
+  writeFileSync(join(projectPath, "README.md"), readme(projectName));
 
   // --------------------------------------------------------------------------- //
 
   log(
-    `✅ Backend project '${actualProjectName}' created successfully!`,
+    `✅ Backend project '${projectName}' created successfully!`,
     false,
     verbose,
   );
@@ -93,8 +80,8 @@ export function beCommand(
   }
 
   log(`\nNext steps:`, true, verbose);
-  if (!isCurrentDir) {
-    log(`  cd ${actualProjectName}`, true, verbose);
+  if (!targetPath) {
+    log(`  cd ${projectName}`, true, verbose);
   }
   log(`  bun run dev`, true, verbose);
 }
