@@ -48,7 +48,7 @@ ${banner}
 );
 
 const [command, ...args] = cli.input;
-console.log({ args });
+// console.log({ args });
 
 switch (command) {
   case "be":

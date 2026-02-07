@@ -8,11 +8,11 @@ import dotenv from "dotenv";
 dotenv.config({ path: ".env", quiet: true });
 
 export const ENV = process.env as Record<string, string>;
-export const IS_NPMJS = ENV["_"]?.includes(".bin/fbi");
+export const IS_NPMJS = typeof ENV["npm_package_bin_fbi"] != "string";
 export const PWD = IS_NPMJS
   ? process.cwd()
   : path.join(process.cwd(), "isolate");
-console.log({ ENV, PWD, IS_NPMJS });
+// console.log({ ENV, PWD, IS_NPMJS });
 
 export const PROJECT_TARGET_URL = ENV.PROJECT_TARGET_URL;
 
