@@ -1,4 +1,10 @@
-import { existsSync, mkdirSync, writeFileSync, rmSync } from "node:fs";
+import {
+  existsSync,
+  mkdirSync,
+  writeFileSync,
+  rmSync,
+  readdirSync,
+} from "node:fs";
 import { join } from "node:path";
 
 import { log } from "../../utils/logger";
@@ -25,9 +31,18 @@ export function beCommand(
   }
 
   if (existsSync(projectPath)) {
-    if (IS_NPMJS) {
-      console.error(`❌ Error: Directory '${projectName}' already exists`);
-      process.exit(1);
+    const dirContent = readdirSync(projectPath);
+    const hasContent = dirContent.length > 0;
+    if (IS_NPMJS && hasContent) {
+      console.warn(
+        `⚠️  Warning: Directory '${projectName}' already exists and is not empty`,
+      );
+      const answer = prompt("Do you want to continue and overwrite? (y/n): ");
+      if (answer?.toLowerCase() !== "y") {
+        console.log("❌ Operation cancelled");
+        process.exit(1);
+      }
+      console.log("✅ Continuing...");
     }
   }
 
