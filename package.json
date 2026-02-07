@@ -16,11 +16,14 @@
   },
   "type": "module",
   "scripts": {
+    "build": "bun run build.ts",
+    "prepublishOnly": "bun run build",
     "start": "bun run src/index.ts",
-    "build": "bun build ./src/index.ts --compile --outfile fbi"
+    "compile": "bun build ./src/index.ts --compile --outfile fbi"
   },
   "files": [
-    "src"
+    "dist",
+    "README.md"
   ],
   "keywords": [
     "flash builder",
@@ -28,6 +31,7 @@
     "bun"
   ],
   "dependencies": {
+    "bun-plugin-dts": "^0.3.0",
     "dotenv": "^17.2.4",
     "meow": "^14.0.0"
   },
